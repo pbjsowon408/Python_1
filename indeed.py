@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 LIMIT = 50
 URL = f"https://jp.indeed.com/%E6%B1%82%E4%BA%BA?q=python&limit={LIMIT}"
 
-def extract_indeed_pages():  #define extract function of indeed pages
+def get_last_pages():  #define extract function of indeed pages
     result = requests.get(URL) # request page
 
     soup = BeautifulSoup(result.text, "html.parser") 
@@ -57,7 +57,7 @@ def extract_job(html):
         }
 
 
-def extract_indeed_jobs(last_page):
+def extract_jobs(last_page):
     
     jobs = []
 
@@ -75,7 +75,10 @@ def extract_indeed_jobs(last_page):
 
     return jobs
 
-
+def get_jobs():
+     last_page = get_last_pages()
+     jobs = extract_jobs(last_page)
+     return jobs
 # In[ ]:
 
 
