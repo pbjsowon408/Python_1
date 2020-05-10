@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 LIMIT = 50
-URL = f"https://jp.indeed.com/%E6%B1%82%E4%BA%BA?q=python&limit={LIMIT}"
+URL = f"https://jp.indeed.com/jobs?q=python&limit={LIMIT}"
 
 def get_last_pages():  #define extract function of indeed pages
     result = requests.get(URL) # request page
@@ -40,15 +40,14 @@ def extract_job(html):
       title = html.find("h2", {"class":"title"}).find("a")["title"]
       company = html.find("span",{"class":"company"})
       
-      if company: #some company doesnt have there name..  
+      if company: #some company doesnt have there name...
         company_anchor = company.find("a")
         if company_anchor is not None:
-            company = str(company_anchor.string)
+           company = str(company_anchor.string)
 
         else:
-            company = str(company.string)
+           company = str(company.string)
         company = company.strip() #strip() function removes all space 
-       
       else:
         company = None
       location = html.find("div",{"class":"recJobLoc"})["data-rc-loc"]
@@ -80,9 +79,9 @@ def extract_jobs(last_page):
     return jobs
 
 def get_jobs():
-     last_page = get_last_pages()
-     jobs = extract_jobs(last_page)
-     return jobs
+  last_page = get_last_pages()
+  jobs = extract_jobs(last_page)
+  return jobs
 # In[ ]:
 
 
