@@ -39,14 +39,18 @@ def extract_job(html):
 
       title = html.find("h2", {"class":"title"}).find("a")["title"]
       company = html.find("span",{"class":"company"})
-      company_anchor = company.find("a")
+      
+      if company: #some company doesnt have there name..  
+        company_anchor = company.find("a")
+        if company_anchor is not None:
+            company = str(company_anchor.string)
 
-      if company_anchor is not None:
-        company = str(company_anchor.string)
-
+        else:
+            company = str(company.string)
+        company = company.strip() #strip() function removes all space 
+       
       else:
-        company = str(company.string)
-      company = company.strip() #strip() function removes all space 
+        company = None
       location = html.find("div",{"class":"recJobLoc"})["data-rc-loc"]
       job_id = html["data-jk"]
 
