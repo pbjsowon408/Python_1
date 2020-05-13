@@ -8,10 +8,9 @@ import requests
 from bs4 import BeautifulSoup
 
 LIMIT = 50
-URL = f"https://jp.indeed.com/jobs?q=python&limit={LIMIT}"
 
-def get_last_pages():  #define extract function of indeed pages
-    result = requests.get(URL) # request page
+def get_last_pages(url):  #define extract function of indeed pages
+    result = requests.get(url) # request page
 
     soup = BeautifulSoup(result.text, "html.parser") 
     #create soup to search page numbers (extract data / whole html file)
@@ -60,7 +59,7 @@ def extract_job(html):
         }
 
 
-def extract_jobs(last_page):
+def extract_jobs(last_page, url):
     
     jobs = []
 
@@ -68,7 +67,7 @@ def extract_jobs(last_page):
 
       print(f"Scrapping Page {page}")
 
-      result = requests.get(f"{URL}&start={page*LIMIT}") #request whole pages of indeed.com 
+      result = requests.get(f"{url}&start={page*LIMIT}") #request whole pages of indeed.com 
       soup = BeautifulSoup(result.text, "html.parser")
       results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
 
@@ -78,9 +77,10 @@ def extract_jobs(last_page):
 
     return jobs
 
-def get_jobs():
-  last_page = get_last_pages()
-  jobs = extract_jobs(last_page)
+def get_jobs(word):
+  url = f"https://jp.indeed.com/jobs?q=python&limit={LIMIT}"
+  last_page = get_last_pages(url)
+  jobs = extract_jobs(last_page, url)
   return jobs
 # In[ ]:
 
