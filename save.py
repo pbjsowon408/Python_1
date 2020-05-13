@@ -1,4 +1,6 @@
-import csv
+# Temporary stop using
+
+'''import csv
 #common saparated value
 def save_to_file(jobs):
   file = open("jobs.csv", mode="w")
@@ -7,7 +9,7 @@ def save_to_file(jobs):
   for job in jobs:
     writer.writerow(list(job.values()))
   return 
-
+'''
 
 
 
