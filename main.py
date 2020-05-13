@@ -29,9 +29,9 @@ def report():
   #save_to_file(jobs)
   if word:
     word = word.lower()
-    fromDb = db.get(word)########## from here
-    if fromDb:
-      jobs = fromDb
+    existingJobs = db.get(word)########## from here
+    if existingJobs:
+      jobs = existingJobs
     else:
       jobs = material
       db[word] = jobs####### to here
