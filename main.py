@@ -37,7 +37,24 @@ def report():
 @app.route("/<username>")# <> means placeholder
 def username(username):
   return "080-0000-0000"
-#since Im using in repl.it, host as 0.0.0.0. 
+
+
+@app.route("/export")
+def export():
+    try: # try every commit(?)
+      word = request.args.get('word') 
+      if not word:
+        raise Exception() #throw an error.  Exception() == Error
+      word = word.lower()
+      jobs = db.get(word)
+      if not jobs:
+        raise Exception()
+      save_to_file(jobs)
+      return send_file(f"{word}.csv")
+    except: # if any error occurs go to /
+      return redirect("/")
+
+    
 app.run(host="0.0.0.0")
 
 
