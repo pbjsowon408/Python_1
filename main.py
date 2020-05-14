@@ -6,13 +6,11 @@
 
 from indeed import get_jobs as get_indeed_jobs
 from so import get_jobs as get_so_jobs
-#from save import save_to_file
-
 from flask import Flask, render_template, request, redirect
 
 app = Flask("PythonScrapper")
 
-db = {}#############
+db = {}
 
 #@ = decorator , looks for only a function under it 
 @app.route("/")
@@ -22,24 +20,19 @@ def home():
 @app.route("/report")
 def report():
   word = request.args.get('word')
-  
-  so_jobs = get_so_jobs(word)
-  indeed_jobs = get_indeed_jobs(word)
-  material = so_jobs + indeed_jobs
-  #save_to_file(jobs)
   if word:
     word = word.lower()
-    existingJobs = db.get(word)########## from here
+    existingJobs = db.get(word)
     if existingJobs:
       jobs = existingJobs
     else:
-      jobs = material
-      db[word] = jobs####### to here
+      jobs = get_so_jobs(word) + get_indeed_jobs(word)
+      db[word] = jobs
 
   else:
     return redirect("/")
   #flask is rendering the variation in the html file "{{}}"
-  return render_template("report.html",searchingBy=word, resultsNumber=len(jobs))##########  , resultsNumber=len(jobs)
+  return render_template("report.html",searchingBy=word, resultsNumber=len(jobs))
 
 @app.route("/<username>")# <> means placeholder
 def username(username):
@@ -47,8 +40,6 @@ def username(username):
 #since Im using in repl.it, host as 0.0.0.0. 
 app.run(host="0.0.0.0")
 
-
-##CSV = Comma Separated Values
 
 
 
